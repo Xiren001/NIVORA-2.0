@@ -7,51 +7,65 @@
 {% endcomment %}
 
 <div class="cart-drawer-upsell">
-  <h3 class="cart-drawer-upsell__heading h4">
+  <h3 class="cart-drawer-upsell__heading caption-with-letter-spacing">
     {{ 'sections.cart.upsell_heading' | t }}
   </h3>
 
-  <slider-component class="cart-drawer-upsell__slider">
-    <ul
-      id="Slider-CartDrawerUpsell"
-      class="slider slider--everywhere cart-drawer-upsell__track list-unstyled"
-      role="list"
-      {% if upsell_count > 1 %}
+  {%- if upsell_count > 1 -%}
+    <slideshow-component class="cart-drawer-upsell__slider">
+      <ul
+        id="Slider-CartDrawerUpsell"
+        class="slider slider--everywhere cart-drawer-upsell__track list-unstyled"
+        role="list"
         aria-label="{{ 'general.slider.name' | t }}"
-      {% endif %}
-    >
+      >
+        {{ upsell_items }}
+      </ul>
+
+      <div class="slider-buttons cart-drawer-upsell__buttons no-js-hidden">
+        <button
+          type="button"
+          class="slider-button slider-button--prev cart-drawer-upsell__arrow"
+          name="previous"
+          aria-label="{{ 'general.slider.previous_slide' | t }}"
+          aria-controls="Slider-CartDrawerUpsell"
+        >
+          <span class="svg-wrapper">
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </span>
+        </button>
+
+        <div class="slider-counter slider-counter--dots">
+          <div class="slideshow__control-wrapper">
+            {%- for i in (1..upsell_count) -%}
+              <button
+                type="button"
+                class="slider-counter__link slider-counter__link--dots link{% if forloop.first %} slider-counter__link--active{% endif %}"
+                aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
+                aria-controls="Slider-CartDrawerUpsell"
+              >
+                <span class="dot"></span>
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="slider-button slider-button--next cart-drawer-upsell__arrow"
+          name="next"
+          aria-label="{{ 'general.slider.next_slide' | t }}"
+          aria-controls="Slider-CartDrawerUpsell"
+        >
+          <span class="svg-wrapper">
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </span>
+        </button>
+      </div>
+    </slideshow-component>
+  {%- else -%}
+    <ul class="cart-drawer-upsell__track cart-drawer-upsell__track--single list-unstyled" role="list">
       {{ upsell_items }}
     </ul>
-
-    <div class="slider-buttons cart-drawer-upsell__buttons{% if upsell_count < 2 %} hidden{% endif %}">
-      <button
-        type="button"
-        class="slider-button slider-button--prev"
-        name="previous"
-        aria-label="{{ 'general.slider.previous_slide' | t }}"
-        aria-controls="Slider-CartDrawerUpsell"
-      >
-        <span class="svg-wrapper">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
-        </span>
-      </button>
-      <div class="slider-counter caption">
-        <span class="slider-counter--current">1</span>
-        <span aria-hidden="true"> / </span>
-        <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
-        <span class="slider-counter--total">{{ upsell_count }}</span>
-      </div>
-      <button
-        type="button"
-        class="slider-button slider-button--next"
-        name="next"
-        aria-label="{{ 'general.slider.next_slide' | t }}"
-        aria-controls="Slider-CartDrawerUpsell"
-      >
-        <span class="svg-wrapper">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
-        </span>
-      </button>
-    </div>
-  </slider-component>
+  {%- endif -%}
 </div>

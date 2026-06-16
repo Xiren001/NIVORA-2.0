@@ -1,5 +1,5 @@
 {% comment %}
-  Renders a compact upsell row for the cart drawer.
+  Renders a cart-styled upsell slide for the cart drawer.
 
   Accepts:
   - product: {Object} Product Liquid object
@@ -19,36 +19,53 @@
 
 <li
   id="Slide-CartDrawerUpsell-{{ product.id }}"
-  class="cart-drawer-upsell__item slider__slide"
+  class="cart-drawer-upsell__item slider__slide slideshow__slide"
 >
-  <div class="cart-drawer-upsell__row">
-    <a href="{{ product.url }}" class="cart-drawer-upsell__media" tabindex="-1" aria-hidden="true">
+  <div class="cart-item cart-drawer-upsell__cart-item">
+    <div class="cart-item__media">
+      <a href="{{ product.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
       {%- if product.featured_media -%}
         <img
-          src="{{ product.featured_media | image_url: width: 120 }}"
+          class="cart-item__image"
+          src="{{ product.featured_media | image_url: width: 300 }}"
           alt="{{ product.featured_media.alt | escape }}"
-          width="56"
-          height="56"
           loading="lazy"
+          width="150"
+          height="{{ 150 | divided_by: product.featured_media.aspect_ratio | ceil }}"
         >
-      {%- else -%}
-        {{ 'product-apparel-2' | placeholder_svg_tag: 'cart-drawer-upsell__placeholder' }}
       {%- endif -%}
-    </a>
+    </div>
 
-    <div class="cart-drawer-upsell__details">
-      <a href="{{ product.url }}" class="cart-drawer-upsell__title">
+    <div class="cart-item__details">
+      <a href="{{ product.url }}" class="cart-item__name h4 break">
         {{- product.title | escape -}}
       </a>
-      {% render 'price', product: product, price_class: 'cart-drawer-upsell__price', show_compare_at_price: true %}
+
+      {%- if upsell_variant.compare_at_price > upsell_variant.price -%}
+        <div class="cart-item__discounted-prices">
+          <span class="visually-hidden">
+            {{ 'products.product.price.regular_price' | t }}
+          </span>
+          <s class="cart-item__old-price product-option">
+            {{- upsell_variant.compare_at_price | money -}}
+          </s>
+          <span class="visually-hidden">
+            {{ 'products.product.price.sale_price' | t }}
+          </span>
+          <strong class="cart-item__final-price product-option">
+            {{ upsell_variant.price | money }}
+          </strong>
+        </div>
+      {%- else -%}
+        <div class="product-option">
+          {{ upsell_variant.price | money }}
+        </div>
+      {%- endif -%}
     </div>
 
     <div class="cart-drawer-upsell__action">
       {%- if has_variant_options -%}
-        <a
-          href="{{ product.url }}"
-          class="button button--secondary cart-drawer-upsell__button cart-drawer-upsell__button--options"
-        >
+        <a href="{{ product.url }}" class="link cart-drawer-upsell__options">
           {{- 'sections.cart.upsell_options' | t -}}
         </a>
       {%- elsif upsell_variant.available -%}
@@ -64,7 +81,7 @@
             <button
               type="submit"
               name="add"
-              class="button button--secondary cart-drawer-upsell__button cart-drawer-upsell__button--add"
+              class="button button--tertiary cart-drawer-upsell__add"
               aria-label="{{ 'products.product.add_to_cart' | t }}"
             >
               <span class="svg-wrapper">
@@ -75,7 +92,7 @@
           {%- endform -%}
         </product-form>
       {%- else -%}
-        <span class="cart-drawer-upsell__sold-out">
+        <span class="cart-drawer-upsell__sold-out caption">
           {{- 'products.product.sold_out' | t -}}
         </span>
       {%- endif -%}
