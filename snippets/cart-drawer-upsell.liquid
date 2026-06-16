@@ -9,7 +9,6 @@
     assign upsell_source = settings.cart_drawer_upsell_source | default: 'recommendations'
     assign upsell_product_id = cart.items.last.product.id
     assign upsell_intent = settings.cart_drawer_upsell_intent | default: 'complementary'
-    assign shown_count = 0
     assign use_static_upsell = false
 
     if upsell_source == 'collection' and settings.cart_drawer_upsell_collection != blank
@@ -20,56 +19,23 @@
   -%}
 
   {%- if use_static_upsell -%}
-    {%- capture static_upsell_items -%}
+    {%- capture upsell_carousel -%}
       {%- if upsell_source == 'collection' -%}
-        {%- for product in settings.cart_drawer_upsell_collection.products -%}
-          {%- if shown_count >= upsell_limit -%}
-            {%- break -%}
-          {%- endif -%}
-
-          {%- assign product_in_cart = false -%}
-          {%- for item in cart.items -%}
-            {%- if item.product_id == product.id -%}
-              {%- assign product_in_cart = true -%}
-            {%- endif -%}
-          {%- endfor -%}
-
-          {%- if product_in_cart == false and product.available -%}
-            {% render 'cart-drawer-upsell-item', product: product %}
-            {%- assign shown_count = shown_count | plus: 1 -%}
-          {%- endif -%}
-        {%- endfor -%}
+        {% render 'cart-drawer-upsell-carousel',
+          products: settings.cart_drawer_upsell_collection.products,
+          limit: upsell_limit
+        %}
       {%- else -%}
-        {%- for product in settings.cart_drawer_upsell_products -%}
-          {%- if shown_count >= upsell_limit -%}
-            {%- break -%}
-          {%- endif -%}
-
-          {%- assign product_in_cart = false -%}
-          {%- for item in cart.items -%}
-            {%- if item.product_id == product.id -%}
-              {%- assign product_in_cart = true -%}
-            {%- endif -%}
-          {%- endfor -%}
-
-          {%- if product_in_cart == false and product.available -%}
-            {% render 'cart-drawer-upsell-item', product: product %}
-            {%- assign shown_count = shown_count | plus: 1 -%}
-          {%- endif -%}
-        {%- endfor -%}
+        {% render 'cart-drawer-upsell-carousel',
+          products: settings.cart_drawer_upsell_products,
+          limit: upsell_limit
+        %}
       {%- endif -%}
     {%- endcapture -%}
 
-    {%- if shown_count > 0 -%}
+    {%- if upsell_carousel != blank -%}
       <div class="cart-drawer__upsell" id="CartDrawer-Upsell">
-        <div class="cart-drawer-upsell">
-          <h3 class="cart-drawer-upsell__heading h4">
-            {{ 'sections.cart.upsell_heading' | t }}
-          </h3>
-          <ul class="cart-drawer-upsell__list list-unstyled" role="list">
-            {{ static_upsell_items }}
-          </ul>
-        </div>
+        {{ upsell_carousel }}
       </div>
     {%- endif -%}
   {%- else -%}

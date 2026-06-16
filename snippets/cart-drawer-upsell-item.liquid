@@ -17,7 +17,7 @@
   assign upsell_form_id = 'CartUpsell-ProductForm-' | append: product.id
 -%}
 
-<li class="cart-drawer-upsell__item">
+<div class="cart-drawer-upsell__item">
   <div class="cart-drawer-upsell__row">
     <a href="{{ product.url }}" class="cart-drawer-upsell__media" tabindex="-1" aria-hidden="true">
       {%- if product.featured_media -%}
@@ -78,4 +78,4 @@
       {%- endif -%}
     </div>
   </div>
-</li>
+</div>
