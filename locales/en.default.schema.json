@@ -348,6 +348,22 @@
             "enable": {
               "label": "Show upsell products"
             },
+            "source": {
+              "label": "Upsell source",
+              "options__1": {
+                "label": "Collection"
+              },
+              "options__2": {
+                "label": "Products"
+              },
+              "options__3": {
+                "label": "Automatic recommendations"
+              }
+            },
+            "collection": {
+              "label": "Upsell collection",
+              "info": "Used when upsell source is Collection. Products are pulled from this collection and respect the current market catalog."
+            },
             "limit": {
               "label": "Maximum products to show"
             },
@@ -362,7 +378,10 @@
             },
             "products": {
               "label": "Upsell products",
-              "info": "Optional. When set, these products are shown instead of automatic recommendations. Only available products in the current market are displayed."
+              "info": "Used when upsell source is Products. Only available products in the current market are displayed."
+            },
+            "recommendations": {
+              "info": "Automatic recommendations use the Search & Discovery app. Configure complementary and related products there."
             }
           }
         }
