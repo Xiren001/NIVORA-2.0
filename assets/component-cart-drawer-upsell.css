@@ -181,7 +181,6 @@ cart-drawer-items.is-empty + .cart-drawer__upsell {
   }
 
   .cart-drawer-upsell__cart-item .cart-item__name {
-    font-size: calc(var(--font-heading-scale) * 1.2rem);
     margin-bottom: 0.2rem;
   }
 
