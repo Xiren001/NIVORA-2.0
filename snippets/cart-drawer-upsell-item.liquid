@@ -1,5 +1,5 @@
 {% comment %}
-  Renders a compact upsell card for the cart drawer carousel.
+  Renders a compact upsell row for the cart drawer.
 
   Accepts:
   - product: {Object} Product Liquid object
@@ -17,60 +17,68 @@
   assign upsell_form_id = 'CartUpsell-ProductForm-' | append: product.id
 -%}
 
-<div class="cart-drawer-upsell__card">
-  <a href="{{ product.url }}" class="cart-drawer-upsell__media" tabindex="-1" aria-hidden="true">
-    {%- if product.featured_media -%}
-      <img
-        src="{{ product.featured_media | image_url: width: 280 }}"
-        alt="{{ product.featured_media.alt | escape }}"
-        width="120"
-        height="120"
-        loading="lazy"
-      >
-    {%- else -%}
-      {{ 'product-apparel-2' | placeholder_svg_tag: 'cart-drawer-upsell__placeholder' }}
-    {%- endif -%}
-  </a>
-
-  <div class="cart-drawer-upsell__details">
-    <a href="{{ product.url }}" class="cart-drawer-upsell__title">
-      {{- product.title | escape -}}
+<li
+  id="Slide-CartDrawerUpsell-{{ product.id }}"
+  class="cart-drawer-upsell__item slider__slide"
+>
+  <div class="cart-drawer-upsell__row">
+    <a href="{{ product.url }}" class="cart-drawer-upsell__media" tabindex="-1" aria-hidden="true">
+      {%- if product.featured_media -%}
+        <img
+          src="{{ product.featured_media | image_url: width: 120 }}"
+          alt="{{ product.featured_media.alt | escape }}"
+          width="56"
+          height="56"
+          loading="lazy"
+        >
+      {%- else -%}
+        {{ 'product-apparel-2' | placeholder_svg_tag: 'cart-drawer-upsell__placeholder' }}
+      {%- endif -%}
     </a>
-    {% render 'price', product: product, price_class: 'cart-drawer-upsell__price', show_compare_at_price: true %}
-  </div>
 
-  <div class="cart-drawer-upsell__action">
-    {%- if has_variant_options -%}
-      <a
-        href="{{ product.url }}"
-        class="button button--secondary cart-drawer-upsell__button cart-drawer-upsell__button--options"
-      >
-        {{- 'sections.cart.upsell_options' | t -}}
+    <div class="cart-drawer-upsell__details">
+      <a href="{{ product.url }}" class="cart-drawer-upsell__title">
+        {{- product.title | escape -}}
       </a>
-    {%- elsif upsell_variant.available -%}
-      <product-form data-section-id="{{ section.id }}">
-        {%- form 'product',
-          product,
-          id: upsell_form_id,
-          class: 'form',
-          novalidate: 'novalidate',
-          data-type: 'add-to-cart-form'
-        -%}
-          <input type="hidden" name="id" value="{{ upsell_variant.id }}">
-          <button
-            type="submit"
-            name="add"
-            class="button button--secondary cart-drawer-upsell__button cart-drawer-upsell__button--add"
-          >
-            <span>{{ 'products.product.add_to_cart' | t }}</span>
-            {%- render 'loading-spinner' -%}
-          </button>
-        {%- endform -%}
-      </product-form>
-    {%- else -%}
-      <span class="cart-drawer-upsell__sold-out">
-        {{- 'products.product.sold_out' | t -}}
-      </span>
-    {%- endif -%}
+      {% render 'price', product: product, price_class: 'cart-drawer-upsell__price', show_compare_at_price: true %}
+    </div>
+
+    <div class="cart-drawer-upsell__action">
+      {%- if has_variant_options -%}
+        <a
+          href="{{ product.url }}"
+          class="button button--secondary cart-drawer-upsell__button cart-drawer-upsell__button--options"
+        >
+          {{- 'sections.cart.upsell_options' | t -}}
+        </a>
+      {%- elsif upsell_variant.available -%}
+        <product-form data-section-id="{{ section.id }}">
+          {%- form 'product',
+            product,
+            id: upsell_form_id,
+            class: 'form',
+            novalidate: 'novalidate',
+            data-type: 'add-to-cart-form'
+          -%}
+            <input type="hidden" name="id" value="{{ upsell_variant.id }}">
+            <button
+              type="submit"
+              name="add"
+              class="button button--secondary cart-drawer-upsell__button cart-drawer-upsell__button--add"
+              aria-label="{{ 'products.product.add_to_cart' | t }}"
+            >
+              <span class="svg-wrapper">
+                {{- 'icon-plus.svg' | inline_asset_content -}}
+              </span>
+              {%- render 'loading-spinner' -%}
+            </button>
+          {%- endform -%}
+        </product-form>
+      {%- else -%}
+        <span class="cart-drawer-upsell__sold-out">
+          {{- 'products.product.sold_out' | t -}}
+        </span>
+      {%- endif -%}
+    </div>
   </div>
-</div>
+</li>

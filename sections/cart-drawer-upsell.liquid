@@ -1,13 +1,33 @@
 {%- liquid
   assign upsell_limit = settings.cart_drawer_upsell_limit | default: 4
+  assign shown_count = 0
 -%}
 
 <div data-upsell-content>
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
-    {% render 'cart-drawer-upsell-slider',
-      products: recommendations.products,
-      upsell_limit: upsell_limit
-    %}
+    {%- capture upsell_items -%}
+      {%- for product in recommendations.products -%}
+        {%- if shown_count >= upsell_limit -%}
+          {%- break -%}
+        {%- endif -%}
+
+        {%- assign product_in_cart = false -%}
+        {%- for item in cart.items -%}
+          {%- if item.product_id == product.id -%}
+            {%- assign product_in_cart = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if product_in_cart == false and product.available -%}
+          {% render 'cart-drawer-upsell-item', product: product %}
+          {%- assign shown_count = shown_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if shown_count > 0 -%}
+      {% render 'cart-drawer-upsell-slider', upsell_items: upsell_items, upsell_count: shown_count %}
+    {%- endif -%}
   {%- endif -%}
 </div>
 

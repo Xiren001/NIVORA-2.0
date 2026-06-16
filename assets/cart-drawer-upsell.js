@@ -32,19 +32,9 @@ class CartDrawerUpsell extends HTMLElement {
         html.innerHTML = text;
         const content = html.querySelector('[data-upsell-content]');
 
-        if (content?.innerHTML.trim().length && content.querySelector('.cart-drawer-upsell__slider, .cart-drawer__upsell')) {
-          const upsellMarkup = content.querySelector('.cart-drawer__upsell') || content.querySelector('.cart-drawer-upsell');
-          const wrapper = this.closest('.cart-drawer__upsell');
-
-          if (upsellMarkup && wrapper) {
-            wrapper.innerHTML = upsellMarkup.classList.contains('cart-drawer__upsell')
-              ? upsellMarkup.innerHTML
-              : upsellMarkup.outerHTML;
-            wrapper.classList.remove('cart-drawer-upsell-loader');
-            this.remove();
-          } else if (wrapper) {
-            wrapper.remove();
-          }
+        if (content?.innerHTML.trim().length && content.querySelector('.cart-drawer-upsell__item')) {
+          this.innerHTML = content.innerHTML;
+          this.classList.remove('cart-drawer-upsell-loader');
         } else {
           this.closest('.cart-drawer__upsell')?.remove();
         }
