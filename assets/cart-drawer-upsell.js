@@ -32,7 +32,7 @@ class CartDrawerUpsell extends HTMLElement {
         html.innerHTML = text;
         const content = html.querySelector('[data-upsell-content]');
 
-        if (content?.innerHTML.trim().length && content.querySelector('.cart-drawer-upsell__item, .cart-drawer-upsell__list li')) {
+        if (content?.innerHTML.trim().length && content.querySelector('.cart-drawer-upsell__item')) {
           this.innerHTML = content.innerHTML;
           this.classList.remove('cart-drawer-upsell-loader');
         } else {

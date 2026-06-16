@@ -4,11 +4,6 @@
 {% endcomment %}
 
 {%- if settings.cart_drawer_upsell_enable and cart != empty -%}
-  {{ 'component-cart-drawer-upsell.css' | asset_url | stylesheet_tag }}
-  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'cart-drawer-upsell.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-
   {%- liquid
     assign upsell_limit = settings.cart_drawer_upsell_limit | default: 4
     assign upsell_source = settings.cart_drawer_upsell_source | default: 'recommendations'
@@ -26,8 +21,6 @@
 
   {%- if use_static_upsell -%}
     {%- capture static_upsell_items -%}
-      {%- assign skip_card_product_styles = false -%}
-
       {%- if upsell_source == 'collection' -%}
         {%- for product in settings.cart_drawer_upsell_collection.products -%}
           {%- if shown_count >= upsell_limit -%}
@@ -42,20 +35,7 @@
           {%- endfor -%}
 
           {%- if product_in_cart == false and product.available -%}
-            <li class="cart-drawer-upsell__item">
-              {% render 'card-product',
-                card_product: product,
-                media_aspect_ratio: 'square',
-                show_secondary_image: false,
-                lazy_load: true,
-                skip_styles: skip_card_product_styles,
-                quick_add: 'standard',
-                section_id: 'cart-drawer-upsell',
-                horizontal_class: true,
-                horizontal_quick_add: true
-              %}
-            </li>
-            {%- assign skip_card_product_styles = true -%}
+            {% render 'cart-drawer-upsell-item', product: product %}
             {%- assign shown_count = shown_count | plus: 1 -%}
           {%- endif -%}
         {%- endfor -%}
@@ -73,20 +53,7 @@
           {%- endfor -%}
 
           {%- if product_in_cart == false and product.available -%}
-            <li class="cart-drawer-upsell__item">
-              {% render 'card-product',
-                card_product: product,
-                media_aspect_ratio: 'square',
-                show_secondary_image: false,
-                lazy_load: true,
-                skip_styles: skip_card_product_styles,
-                quick_add: 'standard',
-                section_id: 'cart-drawer-upsell',
-                horizontal_class: true,
-                horizontal_quick_add: true
-              %}
-            </li>
-            {%- assign skip_card_product_styles = true -%}
+            {% render 'cart-drawer-upsell-item', product: product %}
             {%- assign shown_count = shown_count | plus: 1 -%}
           {%- endif -%}
         {%- endfor -%}

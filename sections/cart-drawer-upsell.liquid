@@ -10,7 +10,6 @@
         {{ 'sections.cart.upsell_heading' | t }}
       </h3>
       <ul class="cart-drawer-upsell__list list-unstyled" role="list">
-        {%- assign skip_card_product_styles = false -%}
         {%- for product in recommendations.products -%}
           {%- if shown_count >= upsell_limit -%}
             {%- break -%}
@@ -24,20 +23,7 @@
           {%- endfor -%}
 
           {%- if product_in_cart == false and product.available -%}
-            <li class="cart-drawer-upsell__item">
-              {% render 'card-product',
-                card_product: product,
-                media_aspect_ratio: 'square',
-                show_secondary_image: false,
-                lazy_load: true,
-                skip_styles: skip_card_product_styles,
-                quick_add: 'standard',
-                section_id: section.id,
-                horizontal_class: true,
-                horizontal_quick_add: true
-              %}
-            </li>
-            {%- assign skip_card_product_styles = true -%}
+            {% render 'cart-drawer-upsell-item', product: product %}
             {%- assign shown_count = shown_count | plus: 1 -%}
           {%- endif -%}
         {%- endfor -%}
