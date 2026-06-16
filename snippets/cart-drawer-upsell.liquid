@@ -9,35 +9,18 @@
     assign upsell_source = settings.cart_drawer_upsell_source | default: 'recommendations'
     assign upsell_product_id = cart.items.last.product.id
     assign upsell_intent = settings.cart_drawer_upsell_intent | default: 'complementary'
-    assign use_static_upsell = false
-
-    if upsell_source == 'collection' and settings.cart_drawer_upsell_collection != blank
-      assign use_static_upsell = true
-    elsif upsell_source == 'products' and settings.cart_drawer_upsell_products.count > 0
-      assign use_static_upsell = true
-    endif
   -%}
 
-  {%- if use_static_upsell -%}
-    {%- capture upsell_carousel -%}
-      {%- if upsell_source == 'collection' -%}
-        {% render 'cart-drawer-upsell-carousel',
-          products: settings.cart_drawer_upsell_collection.products,
-          limit: upsell_limit
-        %}
-      {%- else -%}
-        {% render 'cart-drawer-upsell-carousel',
-          products: settings.cart_drawer_upsell_products,
-          limit: upsell_limit
-        %}
-      {%- endif -%}
-    {%- endcapture -%}
-
-    {%- if upsell_carousel != blank -%}
-      <div class="cart-drawer__upsell" id="CartDrawer-Upsell">
-        {{ upsell_carousel }}
-      </div>
-    {%- endif -%}
+  {%- if upsell_source == 'collection' and settings.cart_drawer_upsell_collection != blank -%}
+    {% render 'cart-drawer-upsell-slider',
+      products: settings.cart_drawer_upsell_collection.products,
+      upsell_limit: upsell_limit
+    %}
+  {%- elsif upsell_source == 'products' and settings.cart_drawer_upsell_products.count > 0 -%}
+    {% render 'cart-drawer-upsell-slider',
+      products: settings.cart_drawer_upsell_products,
+      upsell_limit: upsell_limit
+    %}
   {%- else -%}
     <div class="cart-drawer__upsell" id="CartDrawer-Upsell">
       <cart-drawer-upsell

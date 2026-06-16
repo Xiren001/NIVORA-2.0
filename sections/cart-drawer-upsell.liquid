@@ -4,7 +4,10 @@
 
 <div data-upsell-content>
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
-    {% render 'cart-drawer-upsell-carousel', products: recommendations.products, limit: upsell_limit %}
+    {% render 'cart-drawer-upsell-slider',
+      products: recommendations.products,
+      upsell_limit: upsell_limit
+    %}
   {%- endif -%}
 </div>
 

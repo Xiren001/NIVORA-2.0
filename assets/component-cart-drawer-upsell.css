@@ -4,82 +4,47 @@
   flex-shrink: 0;
 }
 
-.cart-drawer-upsell {
-  position: relative;
-}
-
-.cart-drawer-upsell__header {
-  padding-right: 9rem;
-  margin-bottom: 0.8rem;
-}
-
-.cart-drawer-upsell__heading {
-  margin: 0;
-  font-size: calc(var(--font-heading-scale) * 1.4rem);
-}
-
 .cart-drawer-upsell__slider {
-  --desktop-margin-left-first-item: 0;
   display: block;
 }
 
+.cart-drawer-upsell__slider .cart-drawer-upsell__header {
+  margin-bottom: 0.8rem;
+}
+
 .cart-drawer-upsell__track {
-  display: flex;
-  gap: 0;
-  margin-bottom: 0;
+  margin: 0;
+  padding: 0 0 0.2rem;
+  gap: 1rem;
   scroll-padding-left: 0;
 }
 
 .cart-drawer-upsell__track:after {
-  display: none;
-}
-
-.cart-drawer-upsell__controls {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin: 0;
-}
-
-.cart-drawer-upsell__controls .slider-button {
-  width: 2.8rem;
-  height: 2.8rem;
-}
-
-.cart-drawer-upsell__controls .slider-button .svg-wrapper {
-  width: 0.8rem;
-  height: 0.8rem;
-}
-
-.cart-drawer-upsell__controls .slider-counter {
-  min-width: 3.2rem;
-  text-align: center;
-  margin: 0;
+  padding-left: 0;
 }
 
 .cart-drawer-upsell__slide {
-  width: 100%;
-  min-width: 100%;
+  width: calc(100% - 3.6rem);
+  max-width: 28rem;
   flex-shrink: 0;
   scroll-snap-align: start;
-  padding: 0;
 }
 
-.cart-drawer-upsell__row {
-  display: grid;
-  grid-template-columns: 5.6rem 1fr auto;
-  gap: 1rem;
-  align-items: center;
+.cart-drawer-upsell__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  height: 100%;
+  padding: 1rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.12);
+  border-radius: 0.6rem;
+  background: rgba(var(--color-foreground), 0.02);
 }
 
 .cart-drawer-upsell__media {
   display: block;
-  width: 5.6rem;
-  height: 5.6rem;
-  flex-shrink: 0;
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: 0.4rem;
   overflow: hidden;
   background: rgba(var(--color-foreground), 0.04);
@@ -95,19 +60,19 @@
 
 .cart-drawer-upsell__details {
   min-width: 0;
+  flex-grow: 1;
 }
 
 .cart-drawer-upsell__title {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
   overflow: hidden;
   text-decoration: none;
   color: rgb(var(--color-foreground));
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   line-height: 1.35;
-  margin: 0 0 0.2rem;
+  margin: 0 0 0.4rem;
 }
 
 .cart-drawer-upsell__title:hover {
@@ -124,7 +89,7 @@
 }
 
 .cart-drawer-upsell__action {
-  flex-shrink: 0;
+  margin-top: auto;
 }
 
 .cart-drawer-upsell__action .form {
@@ -132,35 +97,49 @@
 }
 
 .cart-drawer-upsell__button {
-  min-width: 3.6rem;
-  min-height: 3.6rem;
-  padding: 0 0.8rem;
-  font-size: 1.1rem;
+  width: 100%;
+  min-height: 3.8rem;
+  padding: 0.8rem 1.2rem;
+  font-size: 1.2rem;
   line-height: 1;
 }
 
-.cart-drawer-upsell__button--add {
-  width: 3.6rem;
-  padding: 0;
-}
-
-.cart-drawer-upsell__button--add .svg-wrapper {
-  width: 1rem;
-  height: 1rem;
-}
-
 .cart-drawer-upsell__button--add .loading__spinner {
-  width: 1.4rem;
-}
-
-.cart-drawer-upsell__button--options {
-  white-space: nowrap;
+  width: 1.6rem;
 }
 
 .cart-drawer-upsell__sold-out {
-  font-size: 1.1rem;
+  display: block;
+  text-align: center;
+  font-size: 1.2rem;
   opacity: 0.7;
-  white-space: nowrap;
+}
+
+.cart-drawer-upsell__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cart-drawer-upsell__heading {
+  margin: 0;
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+}
+
+.cart-drawer-upsell__controls {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.cart-drawer-upsell__controls .slider-button {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.cart-drawer-upsell__controls .slider-counter {
+  min-width: 3.2rem;
+  text-align: center;
 }
 
 .cart-drawer-upsell-loader {
@@ -171,13 +150,8 @@ cart-drawer-items.is-empty + .cart-drawer__upsell {
   display: none;
 }
 
-.cart-drawer__upsell:empty {
-  display: none;
-  padding: 0;
-  border: 0;
-}
-
-.cart-drawer-upsell__header:only-child {
-  padding-right: 0;
-  margin-bottom: 0;
+@media screen and (max-width: 749px) {
+  .cart-drawer-upsell__slide {
+    width: calc(100% - 2.4rem);
+  }
 }
