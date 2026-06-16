@@ -1,0 +1,78 @@
+{% comment %}
+  Renders upsell products in the cart drawer.
+  Uses a manual product list when configured, otherwise loads complementary/related
+  recommendations for the most recently added cart item.
+{% endcomment %}
+
+{%- if settings.cart_drawer_upsell_enable and cart != empty -%}
+  {{ 'component-cart-drawer-upsell.css' | asset_url | stylesheet_tag }}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'cart-drawer-upsell.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+
+  {%- liquid
+    assign upsell_limit = settings.cart_drawer_upsell_limit | default: 4
+    assign upsell_product_id = cart.items.last.product.id
+    assign upsell_intent = settings.cart_drawer_upsell_intent | default: 'complementary'
+    assign manual_products = settings.cart_drawer_upsell_products
+    assign shown_count = 0
+  -%}
+
+  {%- if manual_products != blank and manual_products.count > 0 -%}
+    {%- capture manual_upsell_items -%}
+      {%- assign skip_card_product_styles = false -%}
+      {%- for product in manual_products -%}
+        {%- if shown_count >= upsell_limit -%}
+          {%- break -%}
+        {%- endif -%}
+
+        {%- assign product_in_cart = false -%}
+        {%- for item in cart.items -%}
+          {%- if item.product_id == product.id -%}
+            {%- assign product_in_cart = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if product_in_cart == false and product.available -%}
+          <li class="cart-drawer-upsell__item">
+            {% render 'card-product',
+              card_product: product,
+              media_aspect_ratio: 'square',
+              show_secondary_image: false,
+              lazy_load: true,
+              skip_styles: skip_card_product_styles,
+              quick_add: 'standard',
+              section_id: 'cart-drawer-upsell',
+              horizontal_class: true,
+              horizontal_quick_add: true
+            %}
+          </li>
+          {%- assign skip_card_product_styles = true -%}
+          {%- assign shown_count = shown_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if shown_count > 0 -%}
+      <div class="cart-drawer__upsell" id="CartDrawer-Upsell">
+        <div class="cart-drawer-upsell">
+          <h3 class="cart-drawer-upsell__heading h4">
+            {{ 'sections.cart.upsell_heading' | t }}
+          </h3>
+          <ul class="cart-drawer-upsell__list list-unstyled" role="list">
+            {{ manual_upsell_items }}
+          </ul>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- else -%}
+    <div class="cart-drawer__upsell" id="CartDrawer-Upsell">
+      <cart-drawer-upsell
+        class="cart-drawer-upsell-loader"
+        data-url="{{ routes.product_recommendations_url }}?limit={{ upsell_limit }}&intent={{ upsell_intent }}"
+        data-section-id="cart-drawer-upsell"
+        data-product-id="{{ upsell_product_id }}"
+      ></cart-drawer-upsell>
+    </div>
+  {%- endif -%}
+{%- endif -%}
