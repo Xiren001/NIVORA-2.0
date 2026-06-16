@@ -126,6 +126,7 @@
     "show_vendor": false,
     "show_cart_note": false,
     "cart_drawer_collection": "",
+    "cart_drawer_upsell_source": "collection",
     "cart_drawer_upsell_collection": "all",
     "cart_drawer_upsell_limit": 3,
     "cart_color_scheme": "scheme-1",
