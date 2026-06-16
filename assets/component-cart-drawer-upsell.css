@@ -121,7 +121,7 @@
 }
 
 .cart-drawer-upsell__buttons {
-  margin: 1rem 0 0;
+  margin: 0.6rem 0 0;
   gap: 0.4rem;
 }
 
@@ -137,7 +137,7 @@
 }
 
 .cart-drawer-upsell__buttons .slider-counter__link {
-  padding: 0.8rem;
+  padding: 0.7rem;
   min-width: 4.4rem;
   min-height: 4.4rem;
   display: inline-flex;
@@ -186,7 +186,7 @@ cart-drawer-items.is-empty + .cart-drawer__upsell {
 
   .cart-drawer-upsell__buttons {
     justify-content: center;
-    margin-top: 0.8rem;
+    margin-top: 0.6rem;
   }
 }
 
